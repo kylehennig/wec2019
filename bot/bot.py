@@ -1,6 +1,6 @@
 import random
 
-from guess_board import GuessBoard
+from bot.guess_board import GuessBoard
 
 
 def make_move(board):

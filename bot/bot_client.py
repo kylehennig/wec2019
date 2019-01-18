@@ -1,17 +1,17 @@
 import sys
 
-from web_socket_client import WebSocketClient
-
-from bot import make_move
+import tornado.ioloop
 from server.message import Message
+
+from bot.bot import make_move
+from bot.web_socket_client import WebSocketClient
+
 
 class BotClient(WebSocketClient):
     """Handles websockets for bots"""
 
-    def __init__(self, url, bot):
+    def __init__(self, url):
         super().__init__(url)
-        self.bot = bot
-
         message = Message("JOIN", "100")
         self.write_message(message.json())
         self.last_message = "JOIN"
@@ -38,3 +38,9 @@ class BotClient(WebSocketClient):
             sys.exit(1)
         else:
             print("Unrecognized message header: {}".format(message.header))
+
+
+def main():
+    url = "ws://localhost:8888/player"
+    BotClient(url)
+    tornado.ioloop.IOLoop.current().start()

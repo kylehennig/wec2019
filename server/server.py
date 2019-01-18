@@ -4,8 +4,8 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 
-from board import Board
-from message import Message
+from server.board import Board
+from server.message import Message
 
 
 class PlayerHandler(tornado.websocket.WebSocketHandler):
