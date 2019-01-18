@@ -11,15 +11,14 @@ let bot = false;
 let botButton = document.querySelector(".settings #bot");
 botButton.addEventListener("click", ()=> {bot = true;setup();});
 
-let sF = 1;
+let sF = 1; // scale Factpr
 let screenWidth = 1400*sF;
 let screenHeight = 770*sF;
 
-let app;
-let sideLength;
-let sideCount;
-let nodeWidth;
-let rectangles = [];
+let app; // global pixi container
+let sideCount;// number along on side
+let nodeWidth; // side lenght of one sqaure
+let rectangles = []; // global array of pixi graphic objects 
 let gameOver =false;
 
 /**
