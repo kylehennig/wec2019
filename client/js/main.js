@@ -1,7 +1,40 @@
-let app = new PIXI.Application(800, 600, {backgroundColor : 0x1099bb});
+let sF = 1;
+let screenWidth = 1000*sF;
+let screenHeight = 700*sF;
 
-function main () {
-  document.body.appendChild(app.view);
+let app;
+let sideLength;
+
+function setup () {
+    app = new PIXI.Application(screenWidth,screenHeight, {backgroundColor : 0x000000});
+    document.body.appendChild(app.view);
+    updateMap();
+
+    //app.ticker.add(delta => gameLoop(delta));
 }
 
-window.addEventListener("load", main);
+function gameLoop(delta) {
+
+
+}
+
+function updateMap (){
+
+    sideCount = 1;
+    let nodeWidth = 10;
+
+
+
+    for(let i =0; i < sideCount; i ++){
+        for(let j = 0; i < sideCount; j++){
+            let rectangle = new PIXI.Graphics();
+            rectangle.lineStyle(4, 0xFF0000, 1);
+            rectangle.beginFill(0xFF0000);
+            rectangle.drawRect(nodeWidth*i, nodeWidth*j, nodeWidth, nodeWidth);
+            rectangle.endFill();
+            app.stage.addChild(rectangle);
+        }
+    }
+}
+
+window.addEventListener("load", setup);
