@@ -34,6 +34,11 @@ function setSize() {
 }
 
 function setup () {
+    // Hide size dropdown and start button
+    let settingsElement = document.querySelector(".settings");
+    console.log(settingsElement);
+    settingsElement.style.display = "none";
+
     setSize();
     app = new PIXI.Application(screenWidth,screenHeight, {backgroundColor : 0x000000});
     document.body.appendChild(app.view);
