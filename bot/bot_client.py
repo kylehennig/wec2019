@@ -11,9 +11,9 @@ from server.message import Message
 class BotClient(WebSocketClient):
     """Handles websockets for bots"""
 
-    def __init__(self, url):
+    def __init__(self, url, size):
         super().__init__(url)
-        message = Message("JOIN", {"size": 100})
+        message = Message("JOIN", {"size": size})
         self.write_message(message.json())
         self.last_message = "JOIN"
 
@@ -46,5 +46,12 @@ class BotClient(WebSocketClient):
 
 def main():
     url = "ws://localhost:8888/player"
-    BotClient(url)
+    if len(sys.argv) == 1:
+        BotClient(url, 100)
+    elif len(sys.argv) == 2:
+        size = int(sys.argv[2])
+        BotClient(url, size)
+    else:
+        print("Usage: python3 run_bot.py <size>")
+
     tornado.ioloop.IOLoop.current().start()
