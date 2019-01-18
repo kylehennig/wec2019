@@ -7,19 +7,16 @@ import tornado.websocket
 from server.board import Board
 from server.message import Message
 
-board = None
-
 
 class PlayerHandler(tornado.websocket.WebSocketHandler):
     def __init__(self, application, request, **kwargs):
         super().__init__(application, request, **kwargs)
+        self.board = None
 
     def open(self):
         pass
 
     def on_message(self, message):
-        global board
-
         try:
             message = Message.decode(message)
         except Exception as e:
@@ -33,7 +30,7 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
 
         if message.header == "JOIN":
             # Makes sure a user has not already joined.
-            if board is not None:
+            if self.board is not None:
                 message = Message("ERROR", "A game is already in progress.")
                 self.write_message(message.json())
                 return
@@ -53,26 +50,26 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
                 seed = time.time()
 
             # Generates the game board.
-            board = Board(size, seed)
+            self.board = Board(size, seed)
 
             # Replies when done.
             message = Message("DONE", {"success": True})
             self.write_message(message.json())
         elif message.header == "BOARD":
             # Ensures a user has already joined.
-            if board is None:
+            if self.board is None:
                 message = Message("ERROR", "Please join a game first.")
                 self.write_message(message.json())
                 return
 
             # Replies with the current state of the board.
             message = Message(
-                "DONE", {"success": True, "board": board.serialize()}
+                "DONE", {"success": True, "board": self.board.serialize()}
             )
             self.write_message(message.json())
         elif message.header == "MOVE":
             # Ensures a user has already joined.
-            if board is None:
+            if self.board is None:
                 message = Message("ERROR", "Please join a game first.")
                 self.write_message(message.json())
                 return
@@ -87,7 +84,7 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
                 return
 
             # Checks that x and y are in bounds.
-            if x >= board.basin_count or y >= board.basin_count:
+            if x >= self.board.basin_count or y >= self.board.basin_count:
                 message = Message(
                     "ERROR", "Selected coordinate is out of bounds."
                 )
@@ -95,7 +92,7 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
                 return
 
             # Updates the game board.
-            board.check_node(x, y)
+            self.board.check_node(x, y)
 
             # Replies when done.
             message = Message("DONE", {"success": True})
