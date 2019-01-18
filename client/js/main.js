@@ -61,8 +61,16 @@ function createMap() {
             // rectangle.y = (10 +nodeWidth*j)*sF;
             rectangle.endFill();
 	    rectangle.interactive = true;
-	    rectangle.on("pointerdown", () => { updateRect(rectangle,i,j); });
-	    column.push(rectangle);
+	    rectangle.on("pointerdown", () => { onClick(rectangle,i,j); });
+	    column.push({
+	        graphic: rectangle,
+	        x: i,
+	        y: j,
+	        visited: false,
+	        adjacent: 0,
+	        basin: false,
+	        revealed: false,
+	    });
             app.stage.addChild(rectangle);
         }
         rectangles.push(column);
