@@ -8,8 +8,11 @@
  */
 const client = (function () {
     const socket = new WebSocket("ws://localhost:8888/player");
-
     let open = false;
+    socket.onopen = () => {
+        open = true;
+    };
+
     function sendMessage(message) {
         return new Promise((resolve, reject) => {
             socket.onmessage = (event) => {
@@ -17,18 +20,20 @@ const client = (function () {
                 const body = message.body;
                 resolve(body);
             };
-            
+
             if (!open) {
-                socket.onopen = () => {
-                    socket.send(JSON.stringify(message));
-                    open = true;
-                };
+                setTimeout(() => {
+                    if (!open) {
+                        throw new Error("Could not connect to socket.");
+                    }
+                    socket.send(JSON.stringify(message))
+                }, 1000);
             } else {
                 socket.send(JSON.stringify(message));
             }
 
             setTimeout(() => {
-                reject("Request took more than one minute.")
+                reject("Request took more than one minute.");
             }, 60000);
         });
     }
