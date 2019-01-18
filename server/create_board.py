@@ -1,6 +1,8 @@
-from node import Node
 import random
 from math import sqrt
+
+from node import Node
+
 
 def generate(size, seed):
     """
@@ -13,20 +15,20 @@ def generate(size, seed):
     Returns:
         board: an array of node objects
     """
-
-    board = [[]*sqrt(size)]*sqrt(size)
-    for i in range(sqrt(size)):
-        for j in range(sqrt(size)):
+    basin_count = int(sqrt(size))
+    board = [[] * basin_count] * basin_count
+    for i in range(basin_count):
+        for j in range(basin_count):
             board[i][j] = Node()
 
     random.seed(seed)
 
-    for i in range(sqrt(size)):
-        x = random.randint(0, sqrt(size)-1)
-        y = random.randint(0, sqrt(size)-1)
+    for i in range(basin_count):
+        x = random.randint(0, basin_count - 1)
+        y = random.randint(0, basin_count - 1)
         while board[x][y].basin:
-            x = random.randint(0, sqrt(size)-1)
-            y = random.randint(0, sqrt(size)-1)
+            x = random.randint(0, basin_count - 1)
+            y = random.randint(0, basin_count - 1)
         board[x][y].set_basin()
 
     return board
