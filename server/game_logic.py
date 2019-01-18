@@ -1,5 +1,5 @@
 def check_node(x, y, board):
-    board[x][y].set_visited
+    board[x][y].set_visited()
     stop_checking = False
     # check if node is basin
     if board[x][y].basin:
