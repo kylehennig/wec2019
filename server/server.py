@@ -5,7 +5,6 @@ import tornado.web
 import tornado.websocket
 
 from board import Board
-from game_logic import check_node
 from message import Message
 
 
@@ -64,7 +63,9 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
                 return
 
             # Replies with the current state of the board.
-            message = Message("DONE", {"success": True, "board": self.board})
+            message = Message(
+                "DONE", {"success": True, "board": self.board.serialize()}
+            )
             self.write_message(message.json())
         elif message.header == "MOVE":
             # Ensures a user has already joined.
@@ -83,7 +84,7 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
                 return
 
             # Updates the game board.
-            check_node(x, y, self.board)
+            self.board.check_node(x, y)
 
             # Replies when done.
             message = Message("DONE", {"success": True})

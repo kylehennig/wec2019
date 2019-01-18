@@ -1,11 +1,10 @@
 import random
 from math import sqrt
-from tornado.escape import json_encode
 
 from node import Node
 
 
-class Board():
+class Board:
     def __init__(self, size, seed):
         """
         Create the initial game board and randomly place catch basins.
@@ -31,10 +30,58 @@ class Board():
                 y = random.randint(0, self.basin_count - 1)
                 self.board[x][y].set_basin()
 
-    def json(self):
+    def check_node(self, x, y):
+        self.board[x][y].set_visited()
+        stop_checking = False
+        # check if node is basin
+        if self.board[x][y].basin:
+            stop_checking = True
+        # check left, right, up, down for adjacent basin
+        if x != 0 and self.board[x - 1][y].basin:
+            self.board[x][y].increment_adjacent()
+            stop_checking = True
+        if x != len(self.board) - 1 and self.board[x + 1][y].basin:
+            self.board[x][y].increment_adjacent()
+            stop_checking = True
+        if y != 0 and self.board[x - 1][y - 1].basin:
+            self.board[x][y].increment_adjacent()
+            stop_checking = True
+        if y != len(self.board) - 1 and self.board[x][y + 1].basin:
+            self.board[x][y].increment_adjacent()
+            stop_checking = True
+        # check left-up, left-down, right-down, right-up for basin
+        if x != 0 and y != 0 and self.board[x - 1][y - 1].basin:
+            self.board[x][y].increment_adjacent()
+            stop_checking = True
+        if x != 0 and y != len(self.board) - 1 and self.board[x - 1][
+            y + 1].basin:
+            self.board[x][y].increment_adjacent()
+            stop_checking = True
+        if x != len(self.board) - 1 and y != len(self.board) - 1 and \
+                self.board[x + 1][
+                    y + 1].basin:
+            self.board[x][y].increment_adjacent()
+            stop_checking = True
+        if x != len(self.board) - 1 and y != 0 and self.board[x + 1][y - 1]:
+            self.board[x][y].increment_adjacent()
+            stop_checking = True
+        # recursive base case
+        if stop_checking:
+            return
+        # recursively check left, right, up, down nodes
+        if x != 0 and not self.board[x - 1][y].visited:
+            self.check_node(x - 1, y)
+        if x != len(self.board) - 1 and not self.board[x + 1][y].visited:
+            self.check_node(x + 1, y)
+        if y != 0 and not self.board[x][y - 1].visited:
+            self.check_node(x, y - 1)
+        if y != len(self.board) - 1 and not self.board[x][y + 1].visited:
+            self.check_node(x, y + 1)
+
+    def serialize(self):
         serializable = []
         for i in range(self.basin_count):
             serializable.append([])
             for j in range(self.basin_count):
-                serializable[i].append(self.board[i][j].json())
-        return json_encode(serializable)
+                serializable[i].append(self.board[i][j].serialize())
+        return serializable
