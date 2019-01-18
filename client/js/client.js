@@ -24,3 +24,36 @@ window.addEventListener("", () => {
         }
     })
 });
+
+function sendMessage(message) {
+    // TODO
+}
+
+function clientJoin(size) {
+    const message = {
+        header: "JOIN",
+        body: {
+            size: size,
+            seed: Date.now()
+        }
+    }
+    return sendMessage(message);
+}
+
+function clientBoard() {
+    const message = {
+        header: "BOARD"
+    }
+    return sendMessage(message);
+}
+
+function clientMove(x, y) {
+    const message = {
+        header: "MOVE",
+        body: {
+            x: x,
+            y: y
+        }
+    }
+    return sendMessage(message);
+}
