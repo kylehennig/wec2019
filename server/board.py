@@ -30,6 +30,13 @@ class Board:
                 y = random.randint(0, self.basin_count - 1)
                 self.board[x][y].set_basin()
 
+        self.adjacent = []
+        for i in range(self.basin_count):
+            self.board.append([])
+            for j in range(self.basin_count):
+                counter = 0
+                self.board[i].append()
+
     def check_node(self, x, y):
         self.board[x][y].set_visited()
         stop_checking = False
@@ -62,7 +69,7 @@ class Board:
                     y + 1].basin:
             self.board[x][y].increment_adjacent()
             stop_checking = True
-        if x != len(self.board) - 1 and y != 0 and self.board[x + 1][y - 1]:
+        if x != len(self.board) - 1 and y != 0 and self.board[x + 1][y - 1].basin:
             self.board[x][y].increment_adjacent()
             stop_checking = True
         # recursive base case
@@ -77,6 +84,18 @@ class Board:
             self.check_node(x, y - 1)
         if y != len(self.board) - 1 and not self.board[x][y + 1].visited:
             self.check_node(x, y + 1)
+        # recursively check left-up, left-down, right-down, right-up
+        if x != 0 and y != 0 and not self.board[x - 1][y - 1].visited:
+            self.check_node(x - 1, y - 1)
+        if x != 0 and y != len(self.board) - 1 and not self.board[x - 1][
+            y + 1].visited:
+            self.check_node(x - 1, y + 1)
+        if x != len(self.board) - 1 and y != len(self.board) - 1 and not \
+                self.board[x + 1][
+                    y + 1].visited:
+            self.check_node(x + 1, y + 1)
+        if x != len(self.board) - 1 and y != 0 and not self.board[x + 1][y - 1].visited:
+            self.check_node(x + 1, y - 1)
 
     def serialize(self):
         serializable = []

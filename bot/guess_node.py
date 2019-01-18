@@ -2,6 +2,11 @@ class GuessNode:
     def __init__(self, x, y, board):
         coordinates = [x, y]
         adjacent_basins, adjacent_unvisited = check_adjacent(coordinates, board)
+        adjacent_known_basin = 0
+        adjacent_known_not = 0
+        unsure = True
+        basin = False
+        not_basin = False
 
     def check_adjacent(self, coordinates, board):
         unvisited_counter = 0
@@ -24,3 +29,11 @@ class GuessNode:
         if x != 0 and y != len(board)-1 and not board[x-1][y+1].visited:
             unvisited_counter += 1
         return board[coordinates[0]][coordinates[1]].adjacent, unvisited_counter
+
+    def set_basin(self):
+        self.unsure = False
+        self.basin = True
+
+    def set_not_basin(self):
+        self.unsure = False
+        self.not_basin = True
