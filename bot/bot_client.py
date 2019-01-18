@@ -29,7 +29,6 @@ class BotClient(WebSocketClient):
             board = message.body["board"]
             board = Board.from_json(board)
             x, y = make_move(board)
-            print(x, y)
             message = Message("MOVE", {"x": x, "y": y})
             self.write_message(message.json())
             self.last_message = "MOVE"
