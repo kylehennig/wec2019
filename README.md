@@ -9,7 +9,9 @@ Frontend code can be found in the client folder.
 
 ## Dependencies
 We used PixiJS for 2D rendering.<br>
-http://www.pixijs.com/
+http://www.pixijs.com/<br>
+Tornado web server.<br>
+`pip install tornado`
 
 ## Running our code
 Begin by running `python run_server.py`. Python version 3.7 is recommended.<br>
