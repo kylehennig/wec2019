@@ -7,3 +7,6 @@ Team Osborne Village.
 Backend code can be found in the server folder.<br>
 Frontend code can be found in the client folder.
 
+## Dependencies
+We used PixiJS for 2D rendering.
+http://www.pixijs.com/
