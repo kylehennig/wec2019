@@ -1,7 +1,7 @@
 import random
 from math import sqrt
 
-from node import Node
+from server.node import Node
 
 
 class Board:
