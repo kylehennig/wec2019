@@ -4,6 +4,9 @@ function main() {
 let startButton = document.querySelector(".settings #start");
 startButton.addEventListener("click", setup);
 
+let restartButton = document.querySelector(".again #playagain");
+restartButton.addEventListener("click", ()=> {location.reload(true)});
+
 let sF = 1;
 let screenWidth = 1400*sF;
 let screenHeight = 770*sF;
@@ -14,7 +17,6 @@ let sideCount;
 let nodeWidth;
 let rectangles = [];
 let gameOver =false;
-let againElement = document.querySelector(".again")
 
 /**
  * Reads size from html select element and sets global sideCount
@@ -40,7 +42,6 @@ function setup () {
     let settingsElement = document.querySelector(".settings");
     console.log(settingsElement);
     settingsElement.style.display = "none";
-    againElement.style.display = "none";
 
 
     setSize();
@@ -98,7 +99,7 @@ function createMap() {
 
 function onClick (rectangle,i,j){
     // Send request
-    if(1 ===1){
+    if(!gameOver){
         client.move(i,j).then((res) => {
             if(res.success) {
                 console.log("move success");
@@ -137,6 +138,7 @@ async function requestMap (){
 
 function endGame(){
     gameOver = true;
+    let againElement = document.querySelector(".again")
     againElement.style.display = "block";
     let style = new PIXI.TextStyle({
   fontFamily: "Arial",
@@ -153,10 +155,16 @@ function endGame(){
     let message = new PIXI.Text("GAME OVER",style);
     message.position.set(10, 10);
     app.stage.addChild(message);
+    for(let i = 0; i < sideCount; i++){
+        for( let j= 0; j< sideCount; j++){
+            rectangles[i][j].visited = true
+        }
+    }
 }
 
 function drawMap(){
     // Redraws the map
+    let winCount = 0;
     for(let i = 0; i < sideCount; i++){
         for( let j= 0; j< sideCount; j++){
             if (rectangles[i][j].visited && !rectangles[i][j].revealed) {
@@ -188,7 +196,32 @@ function drawMap(){
             if(rectangles[i][j].visited && rectangles[i][j].basin){
                 endGame();
             }
+
+            if( !rectangles[i][j].visited){
+                winCount+=1;
+            }
+
         }
+    }
+    if (winCount == sideCount){
+        gameOver = true;
+        let style = new PIXI.TextStyle({
+      fontFamily: "Arial",
+      fontSize: 36,
+      fill: "white",
+      stroke: '#ff3300',
+      strokeThickness: 4,
+      dropShadow: true,
+      dropShadowColor: "#000000",
+      dropShadowBlur: 4,
+      dropShadowAngle: Math.PI / 6,
+      dropShadowDistance: 6,
+    });
+        let message = new PIXI.Text("YOU WIN",style);
+        message.position.set(10, 10);
+        app.stage.addChild(message);
+        let againElement = document.querySelector(".again")
+        againElement.style.display = "block";
     }
 }
 
