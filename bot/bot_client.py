@@ -49,7 +49,7 @@ def main():
     if len(sys.argv) == 1:
         BotClient(url, 100)
     elif len(sys.argv) == 2:
-        size = int(sys.argv[2])
+        size = int(sys.argv[1])
         BotClient(url, size)
     else:
         print("Usage: python3 run_bot.py <size>")
