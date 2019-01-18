@@ -76,24 +76,24 @@ class GuessBoard:
             for j in range(self.basin_count):
                 if self.guess_board[i][j].adjacent_known_basin == \
                         self.board[i][j].adjacent:
-                    if i != 0 and not board[i - 1][j].visited:
+                    if i != 0 and self.guess_board[i - 1][j].unsure:
                         self.guess_board[i - 1][j].set_not_basin()
-                    if j != 0 and not board[i][j - 1].visited:
+                    if j != 0 and self.guess_board[i][j - 1].unsure:
                         self.guess_board[i][j - 1].set_not_basin()
-                    if i != self.basin_count - 1 and not board[i + 1][
-                        j].visited:
+                    if i != self.basin_count - 1 and self.guess_board[i + 1][
+                        j].unsure:
                         self.guess_board[i + 1][j].set_not_basin()
-                    if j != self.basin_count - 1 and not board[i][
-                        j + 1].visited:
+                    if j != self.basin_count - 1 and self.guess_board[i][
+                        j + 1].unsure:
                         self.guess_board[i][j + 1].set_not_basin()
-                    if i != 0 and j != 0 and not board[i - 1][j - 1].visited:
+                    if i != 0 and j != 0 and self.guess_board[i - 1][j - 1].unsure:
                         self.guess_board[i - 1][j - 1].set_not_basin()
-                    if i != 0 and j != self.basin_count - 1 and not \
-                            board[i - 1][j + 1].visited:
+                    if i != 0 and j != self.basin_count - 1 and \
+                            self.guess_board[i - 1][j + 1].unsure:
                         self.guess_board[i - 1][j + 1].set_not_basin()
-                    if i != self.basin_count - 1 and j != self.basin_count - 1 and not \
-                            board[i + 1][j + 1].visited:
+                    if i != self.basin_count - 1 and j != self.basin_count - 1 and \
+                            self.guess_board[i + 1][j + 1].unsure:
                         self.guess_board[i + 1][j + 1].set_not_basin()
-                    if i != self.basin_count - 1 and j != 0 and not \
-                            board[i + 1][j - 1].visited:
+                    if i != self.basin_count - 1 and j != 0 and \
+                            self.guess_board[i + 1][j - 1].unsure:
                         self.guess_board[i + 1][j - 1].set_not_basin()
