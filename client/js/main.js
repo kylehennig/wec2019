@@ -13,6 +13,8 @@ let sideLength;
 let sideCount;
 let nodeWidth;
 let rectangles = [];
+let gameOver =false;
+let againElement = document.querySelector(".again")
 
 /**
  * Reads size from html select element and sets global sideCount
@@ -38,6 +40,8 @@ function setup () {
     let settingsElement = document.querySelector(".settings");
     console.log(settingsElement);
     settingsElement.style.display = "none";
+    againElement.style.display = "none";
+
 
     setSize();
     app = new PIXI.Application(screenWidth,screenHeight, {backgroundColor : 0x000000});
@@ -94,17 +98,18 @@ function createMap() {
 
 function onClick (rectangle,i,j){
     // Send request
-    client.move(i,j).then((res) => {
-        if(res.success) {
-            console.log("move success");
-            requestMap();
-        } else {
-            console.log("move failed");
-        }
-        }
+    if(1 ===1){
+        client.move(i,j).then((res) => {
+            if(res.success) {
+                console.log("move success");
+                requestMap();
+            } else {
+                console.log("move failed");
+            }
+            }
+        )
+    }
 
-
-    )
 }
 
 async function requestMap (){
@@ -130,6 +135,26 @@ async function requestMap (){
 
 }
 
+function endGame(){
+    gameOver = true;
+    againElement.style.display = "block";
+    let style = new PIXI.TextStyle({
+  fontFamily: "Arial",
+  fontSize: 36,
+  fill: "white",
+  stroke: '#ff3300',
+  strokeThickness: 4,
+  dropShadow: true,
+  dropShadowColor: "#000000",
+  dropShadowBlur: 4,
+  dropShadowAngle: Math.PI / 6,
+  dropShadowDistance: 6,
+});
+    let message = new PIXI.Text("GAME OVER",style);
+    message.position.set(10, 10);
+    app.stage.addChild(message);
+}
+
 function drawMap(){
     // Redraws the map
     for(let i = 0; i < sideCount; i++){
@@ -153,9 +178,15 @@ function drawMap(){
                     app.stage.addChild(rectangles[i][j].graphic);
 
                     if(rectangles[i][j].adjacent != 0) {
-                        console.log(rectangles[i][j].adjacent);
+                        let message = new PIXI.Text(rectangles[i][j].adjacent);
+                        message.position.set((screenWidth/4 + nodeWidth*i)*sF, (10 +nodeWidth*j)*sF);
+                        app.stage.addChild(message);
+
                     }
                 }
+            }
+            if(rectangles[i][j].visited && rectangles[i][j].basin){
+                endGame();
             }
         }
     }

@@ -48,6 +48,7 @@ class Board:
                 y: y coordinate of node being checked
         """
         self.board[x][y].set_visited()
+        self.board[x][y].adjacent = 0
         stop_checking = False
         # check if node is basin
         if self.board[x][y].basin:
@@ -59,7 +60,7 @@ class Board:
         if x != len(self.board) - 1 and self.board[x + 1][y].basin:
             self.board[x][y].increment_adjacent()
             stop_checking = True
-        if y != 0 and self.board[x - 1][y - 1].basin:
+        if y != 0 and self.board[x][y - 1].basin:
             self.board[x][y].increment_adjacent()
             stop_checking = True
         if y != len(self.board) - 1 and self.board[x][y + 1].basin:
