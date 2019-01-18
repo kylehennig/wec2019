@@ -30,7 +30,7 @@ class Board:
             while self.board[x][y].basin:
                 x = random.randint(0, self.basin_count - 1)
                 y = random.randint(0, self.basin_count - 1)
-                self.board[x][y].set_basin()
+            self.board[x][y].set_basin()
 
         # self.adjacent = []
         # for i in range(self.basin_count):
@@ -69,8 +69,8 @@ class Board:
         if x != 0 and y != 0 and self.board[x - 1][y - 1].basin:
             self.board[x][y].increment_adjacent()
             stop_checking = True
-        if x != 0 and y != len(self.board) - 1 and self.board[x - 1][
-            y + 1].basin:
+        if x != 0 and y != len(self.board) - 1 and self.board[x - 1][y +
+                                                                     1].basin:
             self.board[x][y].increment_adjacent()
             stop_checking = True
         if x != len(self.board) - 1 and y != len(self.board) - 1 and \
@@ -78,7 +78,8 @@ class Board:
                     y + 1].basin:
             self.board[x][y].increment_adjacent()
             stop_checking = True
-        if x != len(self.board) - 1 and y != 0 and self.board[x + 1][y - 1].basin:
+        if x != len(self.board) - 1 and y != 0 and self.board[x + 1][y -
+                                                                     1].basin:
             self.board[x][y].increment_adjacent()
             stop_checking = True
         # recursive base case
@@ -96,14 +97,15 @@ class Board:
         # recursively check left-up, left-down, right-down, right-up
         if x != 0 and y != 0 and not self.board[x - 1][y - 1].visited:
             self.check_node(x - 1, y - 1)
-        if x != 0 and y != len(self.board) - 1 and not self.board[x - 1][
-            y + 1].visited:
+        if x != 0 and y != len(
+                self.board) - 1 and not self.board[x - 1][y + 1].visited:
             self.check_node(x - 1, y + 1)
         if x != len(self.board) - 1 and y != len(self.board) - 1 and not \
                 self.board[x + 1][
                     y + 1].visited:
             self.check_node(x + 1, y + 1)
-        if x != len(self.board) - 1 and y != 0 and not self.board[x + 1][y - 1].visited:
+        if x != len(self.board) - 1 and y != 0 and not self.board[x + 1][
+                y - 1].visited:
             self.check_node(x + 1, y - 1)
 
     def serialize(self):
