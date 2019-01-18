@@ -127,7 +127,7 @@ function drawMap(){
     // Redraws the map
     for(let i = 0; i < sideCount; i++){
         for( let j= 0; j< sideCount; j++){
-            if (rectangles[i][j].visited && rectangle[i][j].revealed) {
+            if (rectangles[i][j].visited && rectangles[i][j].revealed) {
                 if( rectangles[i][j].basin){
                     rectangles[i][j].graphic.clear();
                     rectangles[i][j].graphic.lineStyle(1, 0xc4c4c4, 0.5);
