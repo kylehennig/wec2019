@@ -83,6 +83,14 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
                 self.write_message(message.json())
                 return
 
+            # Checks that x and y are in bounds.
+            if x >= self.board.basin_count or y >= self.board.basin_count:
+                message = Message(
+                    "ERROR", "Selected coordinate is out of bounds."
+                )
+                self.write_message(message.json())
+                return
+
             # Updates the game board.
             self.board.check_node(x, y)
 
