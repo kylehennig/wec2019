@@ -80,6 +80,15 @@ function createMap() {
 
 function onClick (rectangle,i,j){
     // Send request
+    client.move(i,j).then((res) => {
+        if(res.success) {
+            console.log("move success");
+        } else {
+            console.log("move failed");
+        }
+        }
+
+    )
 }
 
 function drawMap(){

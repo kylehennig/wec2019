@@ -1,6 +1,6 @@
 /**
  * Provides a way to communicate with the server.
- * 
+ *
  * Usage:
  *   client.join(size)
  *   client.board()
