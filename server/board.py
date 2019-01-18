@@ -13,6 +13,7 @@ class Board:
             size: The total amount of nodes in board.
             seed: The seed for pseudorandom numbers generation.
         """
+        # create board of Node objects
         self.basin_count = int(sqrt(size))
         self.board = []
         for i in range(self.basin_count):
@@ -22,6 +23,7 @@ class Board:
 
         random.seed(seed)
 
+        # place all catch basins randomly in nodes
         for i in range(self.basin_count):
             x = random.randint(0, self.basin_count - 1)
             y = random.randint(0, self.basin_count - 1)
@@ -30,14 +32,21 @@ class Board:
                 y = random.randint(0, self.basin_count - 1)
                 self.board[x][y].set_basin()
 
-        self.adjacent = []
-        for i in range(self.basin_count):
-            self.board.append([])
-            for j in range(self.basin_count):
-                counter = 0
-                self.board[i].append()
+        # self.adjacent = []
+        # for i in range(self.basin_count):
+        #     self.board.append([])
+        #     for j in range(self.basin_count):
+        #         counter = 0
+        #         self.board[i].append()
 
     def check_node(self, x, y):
+        """
+            Called when user clicks on a square and recurses upon adjacent nodes
+
+            Args:
+                x: x coordinate of node being checked
+                y: y coordinate of node being checked
+        """
         self.board[x][y].set_visited()
         stop_checking = False
         # check if node is basin
