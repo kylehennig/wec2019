@@ -4,7 +4,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 
-from create_board import generate
+from board import Board
 from game_logic import check_node
 from message import Message
 
@@ -51,7 +51,7 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
                 seed = time.time()
 
             # Generates the game board.
-            self.board = generate(size, seed)
+            self.board = Board(size, seed)
 
             # Replies when done.
             message = Message("DONE", {"success": True})

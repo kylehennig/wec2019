@@ -1,3 +1,6 @@
+from tornado.escape import json_encode
+
+
 class Node:
     """Node objects that makes up board"""
 
@@ -14,3 +17,11 @@ class Node:
 
     def increment_adjacent(self):
         self.adjacent += 1
+
+    def json(self):
+        dictionary = {
+            "visited": self.visited,
+            "basin": self.basin,
+            "adjacent": self.adjacent
+        }
+        return json_encode(dictionary)
