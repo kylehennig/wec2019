@@ -100,6 +100,7 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
             # Replies when done.
             message = Message("DONE", {"success": True})
             self.write_message(message.json())
+            time.sleep(1)
         else:
             message = Message("ERROR", "No request of that type exists.")
             self.write_message(message.json())
