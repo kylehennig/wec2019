@@ -1,6 +1,6 @@
 let sF = 1;
-let screenWidth = 1000*sF;
-let screenHeight = 700*sF;
+let screenWidth = 1400*sF;
+let screenHeight = 770*sF;
 
 let app;
 let sideLength;
@@ -10,7 +10,7 @@ function setup () {
     document.body.appendChild(app.view);
     updateMap();
 
-    //app.ticker.add(delta => gameLoop(delta));
+    app.ticker.add(delta => gameLoop(delta));
 }
 
 function gameLoop(delta) {
@@ -20,17 +20,16 @@ function gameLoop(delta) {
 
 function updateMap (){
 
-    sideCount = 1;
-    let nodeWidth = 10;
-
+    sideCount = 30;
+    let nodeWidth =25*sF;
 
 
     for(let i =0; i < sideCount; i ++){
-        for(let j = 0; i < sideCount; j++){
+        for(let j = 0; j < sideCount; j++){
             let rectangle = new PIXI.Graphics();
-            rectangle.lineStyle(4, 0xFF0000, 1);
-            rectangle.beginFill(0xFF0000);
-            rectangle.drawRect(nodeWidth*i, nodeWidth*j, nodeWidth, nodeWidth);
+            rectangle.lineStyle(1, 0xc4c4c4, 0.5);
+            rectangle.beginFill(0xFFFFFFF);
+            rectangle.drawRect((screenWidth/4 + nodeWidth*i)*sF, (10 +nodeWidth*j)*sF, nodeWidth, nodeWidth);
             rectangle.endFill();
             app.stage.addChild(rectangle);
         }
