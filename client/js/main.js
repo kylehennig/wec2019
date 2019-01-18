@@ -67,8 +67,10 @@ function setup () {
 }
 
 function gameLoop(delta) {
-    drawMap();
-    if(bot){
+    if(!gameOver){
+        drawMap();
+    }
+    if(bot && !gameOver){
         requestMap();
     }
 }
