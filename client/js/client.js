@@ -1,59 +1,67 @@
-window.addEventListener("", () => {
-    let lastMessage = null;
+/**
+ * Provides a way to communicate with the server.
+ * 
+ * Usage:
+ *   client.join(size)
+ *   client.board()
+ *   client.move(x, y)
+ */
+const client = (function () {
     const socket = new WebSocket("ws://localhost:8888/player");
-    socket.onopen(() => {
+
+    let open = false;
+    function sendMessage(message) {
+        return new Promise((resolve, reject) => {
+            if (!open) {
+                socket.onopen(() => {
+                    socket.send(JSON.stringify(message));
+                });
+            }
+
+            socket.onmessage((event) => {
+                const message = event.data;
+                resolve(message.body);
+            });
+
+            setTimeout(() => {
+                reject("Request took more than one minute.")
+            }, 60000);
+        });
+
+    }
+
+    function join(size) {
         const message = {
             header: "JOIN",
             body: {
-                size: "100"
+                size: size,
+                seed: Date.now()
             }
         }
-        socket.send(JSON.stringify(message));
-        lastMessage = message.header;
-    });
-    socket.onmessage((event) => {
-        const message = event.data;
-        const header = message.header;
-        const body = message.body;
-        if (body.success === true) {
-            if (lastMessage === "BOARD") {
-                const board = body.board;
+        return sendMessage(message);
+    }
+
+    function board() {
+        const message = {
+            header: "BOARD"
+        }
+        return sendMessage(message);
+    }
+
+    function move(x, y) {
+        const message = {
+            header: "MOVE",
+            body: {
+                x: x,
+                y: y
             }
-        } else {
-            console.alert("Request to server failed.")
         }
-    })
-});
-
-function sendMessage(message) {
-    // TODO
-}
-
-function clientJoin(size) {
-    const message = {
-        header: "JOIN",
-        body: {
-            size: size,
-            seed: Date.now()
-        }
+        return sendMessage(message);
     }
-    return sendMessage(message);
-}
 
-function clientBoard() {
-    const message = {
-        header: "BOARD"
+    return {
+        join: join,
+        board: board,
+        move: move
     }
-    return sendMessage(message);
-}
-
-function clientMove(x, y) {
-    const message = {
-        header: "MOVE",
-        body: {
-            x: x,
-            y: y
-        }
-    }
-    return sendMessage(message);
-}
+})();
