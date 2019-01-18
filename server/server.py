@@ -55,21 +55,21 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
 
             # Replies when done.
             message = Message("DONE", {"success": True})
-            self.write_message(message)
+            self.write_message(message.json())
         elif message.header == "BOARD":
             # Ensures a user has already joined.
-            if self.board is not None:
-                message = Message("ERROR", "A game is already in progress.")
+            if self.board is None:
+                message = Message("ERROR", "Please join a game first.")
                 self.write_message(message.json())
                 return
 
             # Replies with the current state of the board.
             message = Message("DONE", {"success": True, "board": self.board})
-            self.write_message(message)
+            self.write_message(message.json())
         elif message.header == "MOVE":
             # Ensures a user has already joined.
-            if self.board is not None:
-                message = Message("ERROR", "A game is already in progress.")
+            if self.board is None:
+                message = Message("ERROR", "Please join a game first.")
                 self.write_message(message.json())
                 return
 
@@ -87,7 +87,7 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
 
             # Replies when done.
             message = Message("DONE", {"success": True})
-            self.write_message(message)
+            self.write_message(message.json())
         else:
             message = Message("ERROR", "No request of that type exists.")
             self.write_message(message.json())
