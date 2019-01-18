@@ -4,8 +4,29 @@ let screenHeight = 770*sF;
 
 let app;
 let sideLength;
+let sideCount;
+
+/**
+ * Reads size from html select element and sets global sideCount
+ */
+function setSize() {
+  let selectElement = document.querySelector(".settings select");
+  let sizeString = selectElement.value;
+  console.log(sizeString);
+
+  if (sizeString == "small") {
+    sideCount = 10;
+  } else if (sizeString == "medium") {
+    sideCount = 20;
+  } else if (sizeString == "large") {
+    sideCount = 30;
+  } else {
+    console.log("Unrecognized size option from html");
+  }
+}
 
 function setup () {
+    setSize();
     app = new PIXI.Application(screenWidth,screenHeight, {backgroundColor : 0x000000});
     document.body.appendChild(app.view);
     updateMap();
@@ -20,7 +41,6 @@ function gameLoop(delta) {
 
 function updateMap (){
 
-    sideCount = 30;
     let nodeWidth =25*sF;
 
 
@@ -36,4 +56,9 @@ function updateMap (){
     }
 }
 
-window.addEventListener("load", setup);
+function main() {
+  let startButton = document.querySelector(".settings #start");
+  startButton.addEventListener("click", setup);
+}
+
+window.addEventListener("load", main);
