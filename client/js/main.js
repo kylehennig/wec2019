@@ -8,8 +8,8 @@ let restartButton = document.querySelector(".again #playagain");
 restartButton.addEventListener("click", ()=> {location.reload(true)});
 
 let bot = false;
-let botButton = document.querySelector(".settings bot");
-botButton.addEventListener("click", ()=> {bot = true;});
+let botButton = document.querySelector(".settings #bot");
+botButton.addEventListener("click", ()=> {bot = true;setup();});
 
 let sF = 1;
 let screenWidth = 1400*sF;
@@ -68,6 +68,9 @@ function setup () {
 
 function gameLoop(delta) {
     drawMap();
+    if(bot){
+        requestMap();
+    }
 }
 
 function createMap() {
@@ -103,7 +106,7 @@ function createMap() {
 
 function onClick (rectangle,i,j){
     // Send request
-    if(!gameOver){
+    if(!gameOver && !bot){
         client.move(i,j).then((res) => {
             if(res.success) {
                 console.log("move success");
