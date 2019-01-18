@@ -26,7 +26,7 @@ def make_move(board):
                 x = i
                 y = j
     if x != -1 and y != -1:
-        pass
+        return x, y
     # If there are no nodes that are known to not be basin randomly select node
     else:
         x = random.randint(0, bot_board.basin_count - 1)
@@ -34,5 +34,4 @@ def make_move(board):
         while board[x][y].visited:
             x = random.randint(0, bot_board.basin_count - 1)
             y = random.randint(0, bot_board.basin_count - 1)
-
-    return x, y
+        return x, y
