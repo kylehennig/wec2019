@@ -1,4 +1,4 @@
-import random
+import time
 
 import tornado.ioloop
 import tornado.web
@@ -48,7 +48,7 @@ class PlayerHandler(tornado.websocket.WebSocketHandler):
             if "seed" in message.body:
                 seed = message.body["seed"]
             else:
-                seed = random.randint()
+                seed = time.time()
 
             # Generates the game board.
             self.board = generate(size, seed)
