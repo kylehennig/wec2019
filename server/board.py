@@ -78,8 +78,8 @@ class Board:
                     y + 1].basin:
             self.board[x][y].increment_adjacent()
             stop_checking = True
-        if x != len(self.board) - 1 and y != 0 and self.board[x + 1][y -
-                                                                     1].basin:
+        if x != len(self.board) - 1 and y != 0 and self.board[x + 1][
+            y - 1].basin:
             self.board[x][y].increment_adjacent()
             stop_checking = True
         # recursive base case
@@ -105,7 +105,7 @@ class Board:
                     y + 1].visited:
             self.check_node(x + 1, y + 1)
         if x != len(self.board) - 1 and y != 0 and not self.board[x + 1][
-                y - 1].visited:
+            y - 1].visited:
             self.check_node(x + 1, y - 1)
 
     def serialize(self):
@@ -115,3 +115,15 @@ class Board:
             for j in range(self.basin_count):
                 serializable[i].append(self.board[i][j].serialize())
         return serializable
+
+    @staticmethod
+    def from_json(json):
+        board = Board(0, 0)
+        basin_count = len(json)
+        board.board = []
+        for i in range(basin_count):
+            board.board.append([])
+            for j in range(basin_count):
+                node = Node.from_json(json[i][j])
+                board.board[i].append(node)
+        return board

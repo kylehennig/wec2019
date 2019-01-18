@@ -22,3 +22,10 @@ class Node:
             "adjacent": self.adjacent
         }
         return serializable
+
+    @staticmethod
+    def from_json(json):
+        node = Node()
+        node.visited = json.visited
+        node.basin = json.basin
+        node.adjacent = json.adjacent

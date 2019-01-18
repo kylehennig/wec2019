@@ -1,10 +1,11 @@
 import sys
 
 import tornado.ioloop
-from server.message import Message
 
 from bot.bot import make_move
 from bot.web_socket_client import WebSocketClient
+from server.board import Board
+from server.message import Message
 
 
 class BotClient(WebSocketClient):
@@ -25,8 +26,10 @@ class BotClient(WebSocketClient):
             self.write_message(message.json())
             self.last_message = "BOARD"
         elif self.last_message == "BOARD":
-            # TODO: parse board.
-            make_move()
+            board = message.body["board"]
+            board = Board.from_json(board)
+            move = make_move(board)
+            print(move)
             self.last_message = "MOVE"
         elif self.last_message == "MOVE":
             message = Message("BOARD")
