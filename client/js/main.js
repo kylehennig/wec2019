@@ -78,45 +78,35 @@ function createMap() {
     console.log(rectangles);
 }
 
-function updateRect(rectangle,arrayX,arrayY) {
-  let oldX = rectangle.x;
-  let oldY = rectangle.y;
-
-  let visible = false;
-  let number = false;
-  let bomb = false;
-  let newRect;
-  if(!visible){
-      if(number) {
-          rectangle.clear();
-          rectangle.lineStyle(1, 0xc4c4c4, 0.5);
-          rectangle.beginFill(0x00FF00);
-          rectangle.drawRect((screenWidth/4 + nodeWidth*arrayX)*sF, (10 +nodeWidth*arrayY)*sF, nodeWidth, nodeWidth);
-          rectangle.endFill();
-
-      }else if (bomb){
-          rectangle.clear();
-          rectangle.lineStyle(1, 0xc4c4c4, 0.5);
-          rectangle.beginFill(0x00FF00);
-          rectangle.drawRect((screenWidth/4 + nodeWidth*arrayX)*sF, (10 +nodeWidth*arrayY)*sF, nodeWidth, nodeWidth);
-          rectangle.endFill();
-
-
-      } else {
-          rectangle.clear();
-          rectangle.lineStyle(1, 0xc4c4c4, 0.5);
-          rectangle.beginFill(0x00FF00);
-          rectangle.drawRect((screenWidth/4 + nodeWidth*arrayX)*sF, (10 +nodeWidth*arrayY)*sF, nodeWidth, nodeWidth);
-          rectangle.endFill();
-      }
-      visible = true;
-  }
+function onClick (rectangle,i,j){
+    // Send request
 }
 
 function drawMap(){
     for(let i = 0; i < sideCount; i++){
         for( let j= 0; j< sideCount; j++){
-            app.stage.addChild(rectangles[i][j]);
+            if (rectangles[i][j].visited && rectangle[i][j].revealed) {
+                if( rectangles[i][j].catchBasin){
+                    rectangles[i][j].graphic.clear();
+                    rectangles[i][j].graphic.lineStyle(1, 0xc4c4c4, 0.5);
+                    rectangles[i][j].graphic.beginFill(0xFF0000); //Red if basin
+                    rectangles[i][j].graphic.drawRect((screenWidth/4 + nodeWidth*arrayX)*sF, (10 +nodeWidth*arrayY)*sF, nodeWidth, nodeWidth);
+                    rectangles[i][j].graphic.endFill();
+                    app.stage.addChild(rectangles[i][j].graphic);
+
+                } else {
+                    rectangles[i][j].graphic.clear();
+                    rectangles[i][j].graphic.lineStyle(1, 0xc4c4c4, 0.5);
+                    rectangles[i][j].graphic.beginFill(0x00FF00); //Green if not basin
+                    rectangles[i][j].graphic.drawRect((screenWidth/4 + nodeWidth*arrayX)*sF, (10 +nodeWidth*arrayY)*sF, nodeWidth, nodeWidth);
+                    rectangles[i][j].graphic.endFill();
+                    app.stage.addChild(rectangles[i][j].graphic);
+
+                    if(rectangles[i][j].adjacent != 0) {
+                        console.log(rectangles[i][j].adjacent);
+                    }
+                }
+            }
         }
     }
 }
