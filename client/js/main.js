@@ -40,13 +40,15 @@ function setup () {
     createMap();
     //updateMap();
 
-    client.join(sideCount).then((res) => {
+    client.join(sideCount * sideCount).then((res) => {
         if (res.success) {
 	    console.log("Successfully joined game");
             app.ticker.add(delta => gameLoop(delta));
         } else {
 	    console.log("Failed to join");
 	}
+    }).catch((err) => {
+      console.log(err);
     });
 }
 
