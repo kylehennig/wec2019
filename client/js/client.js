@@ -12,6 +12,12 @@ const client = (function () {
     let open = false;
     function sendMessage(message) {
         return new Promise((resolve, reject) => {
+            socket.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                const body = message.body;
+                resolve(body);
+            };
+            
             if (!open) {
                 socket.onopen = () => {
                     socket.send(JSON.stringify(message));
@@ -21,17 +27,10 @@ const client = (function () {
                 socket.send(JSON.stringify(message));
             }
 
-            socket.onmessage = (event) => {
-                const message = JSON.parse(event.data);
-                const body = message.body;
-                resolve(body);
-            };
-
             setTimeout(() => {
                 reject("Request took more than one minute.")
             }, 60000);
         });
-
     }
 
     function join(size) {
