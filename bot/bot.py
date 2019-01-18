@@ -4,15 +4,17 @@ from bot.guess_board import GuessBoard
 
 
 def make_move(board):
+    basin_count = board.basin_count
+    board = board.board
     """
         Function used to play game with bot
 
         Args:
             board: Game board object
     """
-    bot_board = GuessBoard()
+    bot_board = GuessBoard(board, basin_count)
 
-    bot_board.check_for_basin(board)
+    bot_board.check_for_basin()
     bot_board.count_known_basin()
     bot_board.check_for_not_basin()
     x = -1
@@ -29,7 +31,7 @@ def make_move(board):
     else:
         x = random.randint(0, bot_board.basin_count - 1)
         y = random.randint(0, bot_board.basin_count - 1)
-        while board[i][j].visited:
+        while board[x][y].visited:
             x = random.randint(0, bot_board.basin_count - 1)
             y = random.randint(0, bot_board.basin_count - 1)
 

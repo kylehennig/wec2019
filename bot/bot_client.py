@@ -13,7 +13,7 @@ class BotClient(WebSocketClient):
 
     def __init__(self, url):
         super().__init__(url)
-        message = Message("JOIN", "100")
+        message = Message("JOIN", {"size": 100})
         self.write_message(message.json())
         self.last_message = "JOIN"
 
@@ -22,17 +22,19 @@ class BotClient(WebSocketClient):
         message = Message.decode(message)
 
         if self.last_message == "JOIN":
-            message = Message("BOARD")
+            message = Message("BOARD", "")
             self.write_message(message.json())
             self.last_message = "BOARD"
         elif self.last_message == "BOARD":
             board = message.body["board"]
             board = Board.from_json(board)
-            move = make_move(board)
-            print(move)
+            x, y = make_move(board)
+            print(x, y)
+            message = Message("MOVE", {"x": x, "y": y})
+            self.write_message(message.json())
             self.last_message = "MOVE"
         elif self.last_message == "MOVE":
-            message = Message("BOARD")
+            message = Message("BOARD", "")
             self.write_message(message.json())
             self.last_message = "BOARD"
         elif message.header == "ERROR":

@@ -26,6 +26,7 @@ class Node:
     @staticmethod
     def from_json(json):
         node = Node()
-        node.visited = json.visited
-        node.basin = json.basin
-        node.adjacent = json.adjacent
+        node.visited = json["visited"]
+        node.basin = json["basin"]
+        node.adjacent = json["adjacent"]
+        return node

@@ -120,11 +120,11 @@ class Board:
     @staticmethod
     def from_json(json):
         board = Board(0, 0)
-        basin_count = len(json)
+        board.basin_count = len(json)
         board.board = []
-        for i in range(basin_count):
+        for i in range(board.basin_count):
             board.board.append([])
-            for j in range(basin_count):
+            for j in range(board.basin_count):
                 node = Node.from_json(json[i][j])
                 board.board[i].append(node)
         return board
