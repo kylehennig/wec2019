@@ -90,19 +90,43 @@ function onClick (rectangle,i,j){
     client.move(i,j).then((res) => {
         if(res.success) {
             console.log("move success");
+            requestMap();
         } else {
             console.log("move failed");
         }
         }
 
+
     )
 }
 
+async function requestMap (){
+    // Updates map from server data
+    let board;
+    let res = await client.board();
+    if(res.success) {
+        board = res.board;
+    } else {
+        console.log("Failed to retrieve map");
+        return
+    }
+    for(let i = 0; i < sideCount; i++){
+        for( let j= 0; j< sideCount; j++){
+            rectangles[i][j].visited = board [i][j].visited;
+            rectangles[i][j].adjacent = board [i][j].adjacent;
+            rectangles[i][j].basin = board [i][j].basin;
+
+        }
+    }
+
+}
+
 function drawMap(){
+    // Redraws the map
     for(let i = 0; i < sideCount; i++){
         for( let j= 0; j< sideCount; j++){
             if (rectangles[i][j].visited && rectangle[i][j].revealed) {
-                if( rectangles[i][j].catchBasin){
+                if( rectangles[i][j].basin){
                     rectangles[i][j].graphic.clear();
                     rectangles[i][j].graphic.lineStyle(1, 0xc4c4c4, 0.5);
                     rectangles[i][j].graphic.beginFill(0xFF0000); //Red if basin
