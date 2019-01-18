@@ -7,7 +7,7 @@ startButton.addEventListener("click", setup);
 let restartButton = document.querySelector(".again #playagain");
 restartButton.addEventListener("click", ()=> {location.reload(true)});
 
-let bot;
+let bot = false;
 let botButton = document.querySelector(".settings bot");
 botButton.addEventListener("click", ()=> {bot = true;});
 
