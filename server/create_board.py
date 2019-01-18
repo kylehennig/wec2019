@@ -1,5 +1,6 @@
 from node import Node
 import random
+from math import sqrt
 
 def generate(size, seed):
     """
