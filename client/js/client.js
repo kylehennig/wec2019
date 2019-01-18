@@ -13,15 +13,19 @@ const client = (function () {
     function sendMessage(message) {
         return new Promise((resolve, reject) => {
             if (!open) {
-                socket.onopen(() => {
+                socket.onopen = () => {
                     socket.send(JSON.stringify(message));
-                });
+                    open = true;
+                };
+            } else {
+                socket.send(JSON.stringify(message));
             }
 
-            socket.onmessage((event) => {
-                const message = event.data;
-                resolve(message.body);
-            });
+            socket.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                const body = message.body;
+                resolve(body);
+            };
 
             setTimeout(() => {
                 reject("Request took more than one minute.")
