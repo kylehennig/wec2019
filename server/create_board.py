@@ -16,10 +16,11 @@ def generate(size, seed):
         board: an array of node objects
     """
     basin_count = int(sqrt(size))
-    board = [[] * basin_count] * basin_count
+    board = []
     for i in range(basin_count):
-        for j in range(basin_count):
-            board[i][j] = Node()
+        board.append([])
+        for _ in range(basin_count):
+            board[i].append(Node())
 
     random.seed(seed)
 
